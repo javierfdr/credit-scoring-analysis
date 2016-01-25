@@ -18,6 +18,8 @@ from sklearn.lda import LDA
 from sklearn.datasets import load_boston
 import csv
 import random
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 def rewrite_dataset_fc(filename):
     dataset = []
@@ -136,3 +138,23 @@ def getAccuracy(clf,X,y):
     ypred = clf.predict(X)
     return sum(y==ypred)/len(X)
 
+
+def getClassificationSquare(y_true,y_pred):
+    cm = confusion_matrix(y_true,y_pred)
+
+    TP = cm[0,0]
+    TN = cm[0,1]
+    FP = cm[1,0]
+    FN = cm[1,1]
+    return [TP,TN,FP,FN]
+
+def plotConfusionMatrix(cm, target_names, title='Confusion matrix', cmap=plt.cm.Blues):
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(target_names))
+    plt.xticks(tick_marks, target_names, rotation=45)
+    plt.yticks(tick_marks, target_names)
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
